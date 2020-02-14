@@ -1,11 +1,11 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, waitForElement } from '@testing-library/react';
 import ContactForm from './ContactForm';
 import { act } from 'react-dom/test-utils';
 
 
 test('tests that First Name, Last Name, Email, and Message labels exist', async () => {
-    const { getByLabelText, findByTestId } = render(<ContactForm />)
+    const { getByLabelText, findByTestId, queryByTestId, to } = render(<ContactForm />)
     const fName = getByLabelText(/first name/i);
     const lName = getByLabelText(/last name/i);
     const email = getByLabelText(/email/i);
@@ -26,6 +26,10 @@ test('tests that First Name, Last Name, Email, and Message labels exist', async 
     await act(async () => {
         const submit = await findByTestId(/submit/i)
         fireEvent.click(submit);
+    })
+
+    await waitForElement(async () => {
+        expect(queryByTestId(/pre submit/i))
     })
 })
 
